@@ -1,0 +1,47 @@
+import pygame
+from network import Network
+import pickle
+pygame.font.init()
+
+width = 800
+height = 500
+#creating a window
+win = pygame.display.set_mode((width, height))
+#calling it client
+pygame.display.set_caption("Client")
+
+
+class Button:
+    def __init__(self, text, x, y, color):
+        self.text = text
+        self.x = x
+        self.y = y
+        self.color = color
+        self.width = 300
+        self.height = 100
+
+def redrawWindow(win, game, p):
+    win.fill((128,128,128))
+
+def menu_screen():
+    run = True
+
+
+    while run:
+        win.fill((128, 78, 65))
+        font = pygame.font.SysFont("comicsans", 56)
+        text = font.render("Click to Play!", 1, (67,48,0))
+        win.blit(text, (320,200))
+        pygame.display.update()
+        #allows to exit the game screen
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                run = False
+
+    main()
+
+while True:
+    menu_screen()
