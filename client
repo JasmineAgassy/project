@@ -3,8 +3,8 @@ from network import Network
 import pickle
 pygame.font.init()
 
-width = 800
-height = 500
+width = 700
+height = 700
 #creating a window
 win = pygame.display.set_mode((width, height))
 #calling it client
@@ -17,23 +17,105 @@ class Button:
         self.x = x
         self.y = y
         self.color = color
-        self.width = 300
+        self.width = 150
         self.height = 100
+
+    def draw(self, win):
+        pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height))
+        font = pygame.font.SysFont("comicsans", 40)
+        text = font.render(self.text, 1, (255,255,255))
+        win.blit(text, (self.x + round(self.width/2) - round(text.get_width()/2), self.y + round(self.height/2) - round(text.get_height()/2)))
+
+    def click(self, pos):
+        x1 = pos[0]
+        y1 = pos[1]
+        if self.x <= x1 <= self.x + self.width and self.y <= y1 <= self.y + self.height:
+            return True
+        else:
+            return False
+
 
 def redrawWindow(win, game, p):
     win.fill((128,128,128))
 
-def menu_screen():
-    run = True
+    if not(game.connected()):
+        font = pygame.font.SysFont("comicsans", 80)
+        text = font.render("Waiting for Player...", 1, (255,0,0), True)
+        win.blit(text, (width/2 - text.get_width()/2, height/2 - text.get_height()/2))
+    else:
+        font = pygame.font.SysFont("comicsans", 60)
+        text = font.render("Your Move", 1, (0, 255,255))
+        win.blit(text, (50, 200))
 
+        text = font.render("Opponents", 1, (0, 255, 255))
+        win.blit(text, (380, 200))
+
+        move1 = game.get_player_move(0)
+        move2 = game.get_player_move(1)
+        if game.bothWent():
+            text1 = font.render(move1, 1, (0,0,0))
+            text2 = font.render(move2, 1, (0, 0, 0))
+        else:
+            if game.p1Went and p == 0:
+                text1 = font.render(move1, 1, (0,0,0))
+            elif game.p1Went:
+                text1 = font.render("Locked In", 1, (0, 0, 0))
+            else:
+                text1 = font.render("Waiting...", 1, (0, 0, 0))
+
+            if game.p2Went and p == 1:
+                text2 = font.render(move2, 1, (0,0,0))
+            elif game.p2Went:
+                text2 = font.render("Locked In", 1, (0, 0, 0))
+            else:
+                text2 = font.render("Waiting...", 1, (0, 0, 0))
+
+      
+        for btn in btns:
+            btn.draw(win)
+
+    pygame.display.update()
+
+btns = [Button("water", 80, 500, (0,0,0)), Button("fire", 260, 500, (255,0,0)), Button("sponge", 450, 500, (0,255,0))]
+def main():
+    run = True
+    clock = pygame.time.Clock()
+    n = Network()
+    player = int(n.getP())
 
     while run:
+        clock.tick(60)
+        try:
+            game = n.send("get")
+        except:
+            run = False
+            print("Couldn't get game")
+            break
+
+        if game.bothWent():
+            redrawWindow(win, game, player)
+            pygame.time.delay(500)
+           
+           
+            pygame.display.update()
+            pygame.time.delay(2000)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+
+def menu_screen():
+    run = True
+    clock = pygame.time.Clock()
+
+    while run:
+        clock.tick(60)
         win.fill((128, 78, 65))
-        font = pygame.font.SysFont("comicsans", 56)
-        text = font.render("Click to Play!", 1, (67,48,0))
-        win.blit(text, (320,200))
+        font = pygame.font.SysFont("comicsans", 60)
+        text = font.render("Click to Play!", 1, (67, 48, 0))
+        win.blit(text, (100,200))
         pygame.display.update()
-        #allows to exit the game screen
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
