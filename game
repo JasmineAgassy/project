@@ -38,3 +38,4 @@ class Game:
     # checking if both of the players made a move
     def bothWent(self):
         return self.p1Went and self.p2Went
+
