@@ -142,9 +142,9 @@ def menu_screen():
     while run:
         clock.tick(60)
         #opening screen color
-        win.fill((0,255,255))
+        win.fill((128,78,65))
         font = pygame.font.SysFont("comicsans", 60)
-        text = font.render("Click to Play!", 1, (255,100,180))
+        text = font.render("Click to Play!", 1, (235,245,255))
         win.blit(text, (100,200))
         pygame.display.update()
 
