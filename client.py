@@ -1,6 +1,8 @@
 import pygame
 from network import Network
+import cv2
 import pickle
+pygame.font.init()
 
 pygame.font.init()
 
@@ -10,8 +12,8 @@ height = 700
 
 # creating a window
 win = pygame.display.set_mode((width, height))
-# calling the game window client
-pygame.display.set_caption("Client")
+#calling the game window Fire Sponge Water Game
+pygame.display.set_caption("Fire Sponge Water Game")
 
 
 # creating a button
@@ -95,6 +97,33 @@ def redrawWindow(win, game, p):
 btns = [Button("Water", 50, 500, (255, 100, 180)), Button("Fire", 250, 500, (255, 100, 180)),
         Button("Sponge", 450, 500, (255, 100, 180))]
 
+# -----------fire image
+fireImg = pygame.image.load('Fire.png')
+fireX = 250
+fireY = 490
+
+
+def fire():
+    win.blit(fireImg, (fireX, fireY))
+
+
+waterImg = pygame.image.load('water.png')
+waterX = 450
+waterY = 490
+
+
+def water():
+    win.blit(waterImg, (waterX, waterY))
+
+
+spongeImg = pygame.image.load('sponge.png')
+spongeX = 50
+spongeY = 490
+
+
+def sponge():
+    win.blit(spongeImg, (spongeX, spongeY))
+# -----------
 
 def main():
     run = True
@@ -150,6 +179,20 @@ def main():
             # if player0 won or player1 won
             if (game.winner() == 1 and player == 1) or (game.winner() == 0 and player == 0):
                 text = font.render("You Won!", 1, (240, 0, 255))
+                #camara on the winner
+                cap = cv2.VideoCapture(0)
+                print("camara is opening")
+                # while True:
+                ret, frame = cap.read()
+
+                const = 50
+                edge = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                edge = cv2.Laplacian(frame, cv2.CV_16S, ksize=3)
+                cv2.imshow("camera", frame)
+                key = cv2.waitKey(0)
+                if key == ord('q'):
+                    cv2.destroyAllWindows()
+                    # break
             # if the function winner returns -1, there is no winner
             elif game.winner() == -1:
                 text = font.render("Tie Game!", 1, (240, 0, 255))
@@ -190,6 +233,12 @@ def menu_screen():
         win.fill((128, 128, 128))
         font = pygame.font.SysFont("comicsans", 60)
         text = font.render("Click to Play!", 1, (115, 0, 0))
+        #images
+        fire()
+        water()
+        sponge()
+        #------
+
         win.blit(text, (100, 200))
         pygame.display.update()
 
