@@ -38,10 +38,10 @@ def threaded_client(conn, p, gameId):
     #runs while the client is still connected
     while True:
         try:
-            #data= recieved data- reciving data from the connection- recv(4096)- 4096 is the amount of information trying to recieve
-            #המידע מתקבל בביטים והדיקוד מפרש אותו למילים
+        #data= recieved data- reciving data from the connection- recv(4096)- 4096 is the amount of information trying to recieve
+         #המידע מתקבל בביטים והדיקוד מפרש אותו למילים
             data = conn.recv(4096).decode()
-#parts=data.split(",")
+            #parts=data.split(",")
             #cheacking if the game still exists
             if gameId in games:
                 game = games[gameId]
@@ -56,7 +56,7 @@ def threaded_client(conn, p, gameId):
                     elif data != "get":
                         #the player made a move
                         game.play(p, data)
-                    #sends the game to the clients, yhe clients are going to use it to make moves
+                    #sends the game to the clients, the clients are going to use it to make moves
                     conn.sendall(pickle.dumps(game))
             else:
                 break
@@ -103,6 +103,7 @@ def main():
             p = 1
 
 # start_new_thread(threaded_client, (conn, current player, which one of the clients is playing which game))
+# the thread is runnung in the backround which enables a few process to run simultaneously
         start_new_thread(threaded_client, (conn, p, gameId))
 
 
