@@ -15,12 +15,13 @@ class Game:
         self.ties = 0
 
     # get the players move
+    # p can be 0 or 1
     def get_player_move(self, p):
         return self.moves[p]
 
         # player 0= player1
         # player 1= player2
-        # updates the moves lidt with the players move
+        # updates the moves list with the players move
     def play(self, player, move):
         self.moves[player] = move
         # if the player equals 0- player 1 made a move and therefore p1Went is updated to true
@@ -41,8 +42,7 @@ class Game:
     # checking who won (player1 or player2)
     def winner(self):
         # checking 9 possible cases because there are 3 moves each player can do 3 times
-        # checking the first word of the players move ('W'-Water, 'F'- Fire, 'S'-sponge)
-        # checking the first players first letter of his move
+        # checking the first letter of the players move ('W'-Water, 'F'- Fire, 'S'-sponge)
         p1 = self.moves[0].upper()[0]
         # checking the second players first letter of his move
         p2 = self.moves[1].upper()[0]
