@@ -35,7 +35,7 @@ class Button:
         win.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),
                         self.y + round(self.height / 2) - round(text.get_height() / 2)))
 
-    # a method that returns true if the button was clicked and false if it didn't
+    # a method that returns true if the button was clicked and false if it wasn't
     def click(self, pos):
         x1 = pos[0]
         y1 = pos[1]
@@ -97,29 +97,26 @@ def redrawWindow(win, game, p):
 btns = [Button("Water", 50, 500, (255, 100, 180)), Button("Fire", 250, 500, (255, 100, 180)),
         Button("Sponge", 450, 500, (255, 100, 180))]
 
-# -----------fire image
+# fire image
 fireImg = pygame.image.load('Fire.png')
 fireX = 250
 fireY = 490
 
-
 def fire():
     win.blit(fireImg, (fireX, fireY))
 
-
+# water image
 waterImg = pygame.image.load('water.png')
 waterX = 450
 waterY = 490
 
-
 def water():
     win.blit(waterImg, (waterX, waterY))
 
-
+# spoge image
 spongeImg = pygame.image.load('sponge.png')
 spongeX = 50
 spongeY = 490
-
 
 def sponge():
     win.blit(spongeImg, (spongeX, spongeY))
@@ -140,22 +137,6 @@ def main():
         clock.tick(60)
 
         try:
-            '''
-            data= "get"
-            targetId= "3"
-            msgType="game"
-            target="client"
-
-            message= target+ "," +msgType+","+targetId+","+data
-            game = n.send(message)
-
-            user="Jasmine"
-            password= "1234"
-            msgType= "Login"
-            target= "server"
-            message= target+ "," +msgType+","+user+","+password
-            game = n.send(message)
-            '''
             # get the game from the server
             game = n.send("get")
         except:
