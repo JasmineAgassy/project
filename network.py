@@ -1,7 +1,7 @@
 import socket
 import pickle
 
-#connecting to server
+#connecting to server- this class is the connection between the client and server
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,14 +20,17 @@ class Network:
         # put the connect in try- in case it won't be able to connect
         try:
             self.client.connect(self.addr)
+            #when I connect I want to send information immediately back to the object connected to me
             # reciving the players number 0 or 1
             return self.client.recv(2048).decode()
         except:
             pass
 
+
     def send(self, data):
         try:
             self.client.send(str.encode(data))
+            #the reply from the server
             return pickle.loads(self.client.recv(2048*2))
         except socket.error as e:
             print(e)
